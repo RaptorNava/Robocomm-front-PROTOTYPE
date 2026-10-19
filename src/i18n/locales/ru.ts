@@ -19,15 +19,13 @@ const ru = {
   hero: {
     eyebrow: "Студентам. Для студентов.",
     title: "RoboComm — студенческий клуб робототехники четырёх колледжей {{city}}",
-    lead: "Бесплатно. Без опыта. Основан студентами для студентов — при поддержке куратора.",
+    lead: "Бесплатно. Без опыта. Основан студентами для студентов.",
     cta: "Зарегистрироваться на открытие",
     secondary: "Как устроен клуб",
   },
   banner: {
     date: "27.11",
     text: "Открытие — 27 ноября, 16:00, Salymbekov University. 40 студентов ставят электронный флаг Кыргызстана.",
-    reg: "Регистрация:",
-    form: "[ссылка на форму]",
   },
   opening: {
     index: "02",
@@ -68,8 +66,11 @@ const ru = {
       },
       { id: "tsi", name: "TSI AUCA", track: "IT и бизнес" },
       { id: "compass", name: "Compass College", track: "Дизайн" },
-      { id: "portal", name: "Portal College (Не определились)", track: "Game Dev" },
     ],
+  },
+  partners: {
+    kicker: "Вместе создаём RoboComm",
+    title: "Наши спонсоры и партнёры",
   },
   stages: {
     index: "04",
@@ -165,10 +166,15 @@ const ru = {
         title: "Открытие клуба и пайка флага, Salymbekov University",
         hot: true,
       },
-      { date: "4 декабря", time: "16:00", title: "Первая встреча клуба и выбор актива", hot: false },
+      {
+        date: "4 декабря",
+        time: "16:00",
+        title: "Первая встреча клуба и выбор актива",
+        hot: false,
+      },
     ],
     telegram: "Все анонсы — в Telegram-канале клуба",
-    telegramLink: "[Telegram]",
+    telegramLink: "Telegram",
   },
   team: {
     index: "09",
@@ -251,8 +257,8 @@ const ru = {
     kicker: "Контакты",
     title: "На связи с RoboComm",
     mail: "[почта]",
-    instagram: "Instagram [Instagram]",
-    telegram: "Telegram [Telegram]",
+    instagram: "Instagram",
+    telegram: "Telegram",
   },
   footer: {
     rights:

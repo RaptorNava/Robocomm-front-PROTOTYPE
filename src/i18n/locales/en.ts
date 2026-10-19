@@ -21,15 +21,13 @@ const en: Dictionary = {
   hero: {
     eyebrow: "For students. By students.",
     title: "RoboComm — a student robotics club of four colleges in {{city}}",
-    lead: "Free. No experience needed. Founded by students for students — with a mentor's support.",
+    lead: "Free. No experience needed. Founded by students for students.",
     cta: "Register for the opening",
     secondary: "How the club works",
   },
   banner: {
     date: "27.11",
     text: "Opening — 27 November, 16:00, Salymbekov University. 40 students raise the electronic flag of Kyrgyzstan.",
-    reg: "Registration:",
-    form: "[form link]",
   },
   opening: {
     index: "02",
@@ -70,8 +68,11 @@ const en: Dictionary = {
       },
       { id: "tsi", name: "TSI AUCA", track: "IT and business" },
       { id: "compass", name: "Compass College", track: "Design" },
-      { id: "portal", name: "Portal College (not decided yet)", track: "Game Dev" },
     ],
+  },
+  partners: {
+    kicker: "Building RoboComm together",
+    title: "Our sponsors and partners",
   },
   stages: {
     index: "04",
@@ -161,10 +162,15 @@ const en: Dictionary = {
         title: "Club opening and flag soldering, Salymbekov University",
         hot: true,
       },
-      { date: "4 December", time: "16:00", title: "First club meeting and active-member vote", hot: false },
+      {
+        date: "4 December",
+        time: "16:00",
+        title: "First club meeting and active-member vote",
+        hot: false,
+      },
     ],
     telegram: "All announcements are in the club Telegram channel",
-    telegramLink: "[Telegram]",
+    telegramLink: "Telegram",
   },
   team: {
     index: "09",
@@ -247,8 +253,8 @@ const en: Dictionary = {
     kicker: "Contact",
     title: "In touch with RoboComm",
     mail: "[email]",
-    instagram: "Instagram [Instagram]",
-    telegram: "Telegram [Telegram]",
+    instagram: "Instagram",
+    telegram: "Telegram",
   },
   footer: {
     rights:

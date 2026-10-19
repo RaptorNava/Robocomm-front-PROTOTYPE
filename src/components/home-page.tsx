@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -9,9 +9,12 @@ import {
   Cog,
   Eye,
   Info,
+  Instagram,
   KeyRound,
+  Mail,
   Minus,
   Plus,
+  Send,
   Shield,
   Waypoints,
 } from "lucide-react";
@@ -35,7 +38,12 @@ const collegeLogos: Record<string, string> = {
   salym: "/media/college-salym.png",
   tsi: "/media/college-tsi.png",
   compass: "/media/college-compass.png",
-  portal: "/media/college-portal.png",
+};
+
+const collegeTickerNames: Record<string, string> = {
+  salym: "Salymbekov University",
+  tsi: "TSI AUCA",
+  compass: "Compass College",
 };
 
 const principleIcons = [Check, CircleDashed, Shield, Minus];
@@ -52,20 +60,7 @@ const teamPhotos: Record<string, string> = {
 };
 
 function registrationHref() {
-  return site.registrationUrl || "#opening";
-}
-
-function FormLink({ children }: { children: string }) {
-  const external = site.registrationUrl.startsWith("http");
-  return (
-    <a
-      href={registrationHref()}
-      className="text-soft underline decoration-white/20 underline-offset-4 transition-colors hover:text-ink"
-      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-    >
-      {children}
-    </a>
-  );
+  return site.registrationUrl;
 }
 
 function SectionKicker({ index, label }: { index: string; label: string }) {
@@ -88,7 +83,10 @@ function HomeContent() {
   const country = cities.find((item) => item.id === city)?.country ?? "";
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const stages = t("stages.items", { returnObjects: true }) as Array<{ title: string; text: string }>;
+  const stages = t("stages.items", { returnObjects: true }) as Array<{
+    title: string;
+    text: string;
+  }>;
   const colleges = t("network.colleges", { returnObjects: true }) as Array<{
     id: string;
     name: string;
@@ -101,7 +99,10 @@ function HomeContent() {
     title: string;
     text: string;
   }>;
-  const cards = t("principles.cards", { returnObjects: true }) as Array<{ title: string; text: string }>;
+  const cards = t("principles.cards", { returnObjects: true }) as Array<{
+    title: string;
+    text: string;
+  }>;
   const steps = t("path.steps", { returnObjects: true }) as Array<{ title: string; text: string }>;
   const events = t("events.items", { returnObjects: true }) as Array<{
     date: string;
@@ -136,7 +137,10 @@ function HomeContent() {
               >
                 {t("hero.lead")}
               </p>
-              <div className="hero-in mt-8 flex flex-wrap gap-3" style={{ animationDelay: "220ms" }}>
+              <div
+                className="hero-in mt-8 flex flex-wrap gap-3"
+                style={{ animationDelay: "220ms" }}
+              >
                 <a
                   href={registrationHref()}
                   className="inline-flex min-h-12 items-center gap-3 rounded-2xl bg-lilac px-5 text-sm font-semibold text-onlilac transition-transform duration-150 hover:brightness-105 active:scale-[0.96]"
@@ -156,7 +160,10 @@ function HomeContent() {
                 </a>
               </div>
             </div>
-            <div className="hero-in float-y mx-auto w-full max-w-md" style={{ animationDelay: "180ms" }}>
+            <div
+              className="hero-in float-y mx-auto w-full max-w-md"
+              style={{ animationDelay: "180ms" }}
+            >
               <img
                 src="/brand/hero-logo.png"
                 alt="RoboComm"
@@ -166,7 +173,9 @@ function HomeContent() {
           </div>
 
           <a
-            href="#opening"
+            href={registrationHref()}
+            target="_blank"
+            rel="noreferrer"
             className="hero-in mt-10 flex flex-col items-start gap-3 rounded-3xl bg-band px-5 py-4 transition-transform duration-150 hover:brightness-110 sm:flex-row sm:items-center sm:gap-4 md:px-7 md:py-5"
             style={{ animationDelay: "280ms" }}
           >
@@ -179,9 +188,6 @@ function HomeContent() {
             </span>
             <ArrowDown className="hidden size-4 shrink-0 text-lilac sm:block" />
           </a>
-          <p className="mt-3 text-sm text-dim">
-            {t("banner.reg")} <FormLink>{t("banner.form")}</FormLink>
-          </p>
         </section>
 
         <section id="opening" className="scroll-mt-24 py-16 md:py-24">
@@ -209,7 +215,9 @@ function HomeContent() {
                     </div>
                   ))}
                 </div>
-                <p className="mt-3 text-xs tracking-[0.16em] text-dim uppercase">{t("opening.keysCaption")}</p>
+                <p className="mt-3 text-xs tracking-[0.16em] text-dim uppercase">
+                  {t("opening.keysCaption")}
+                </p>
               </Reveal>
               <Reveal delay={80}>
                 <div className="space-y-4 text-base leading-relaxed text-soft">
@@ -219,7 +227,10 @@ function HomeContent() {
                 <h3 className="mt-8 text-xl font-semibold">{t("opening.program")}</h3>
                 <ul className="mt-4 space-y-3">
                   {program.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-relaxed text-soft md:text-base">
+                    <li
+                      key={item}
+                      className="flex gap-3 text-sm leading-relaxed text-soft md:text-base"
+                    >
                       <span className="mt-2 size-1.5 shrink-0 rounded-full bg-lilac" />
                       <span>{item}</span>
                     </li>
@@ -231,16 +242,13 @@ function HomeContent() {
               <div>
                 <p className="eyebrow text-dim">{t("opening.when")}</p>
                 <p className="mt-2 max-w-2xl text-ink">{t("opening.place")}</p>
-                <p className="mt-1 text-sm text-dim">
-                  {t("opening.door")} · <FormLink>{t("banner.form")}</FormLink>
-                </p>
+                <p className="mt-1 text-sm text-dim">{t("opening.door")}</p>
               </div>
               <a
                 href={registrationHref()}
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-2xl bg-lilac px-5 text-sm font-semibold text-onlilac active:scale-[0.96]"
-                {...(site.registrationUrl.startsWith("http")
-                  ? { target: "_blank", rel: "noreferrer" }
-                  : {})}
               >
                 {t("opening.come")}
                 <ArrowUpRight className="size-4" />
@@ -304,6 +312,52 @@ function HomeContent() {
                   ))}
                 </ul>
               </Reveal>
+            </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="partners-title"
+          className="overflow-hidden border-y border-hairline py-7 md:py-9"
+        >
+          <div className="wrap">
+            <p className="eyebrow">{t("partners.kicker")}</p>
+            <h2 id="partners-title" className="mt-2 text-xl font-semibold md:text-2xl">
+              {t("partners.title")}
+            </h2>
+          </div>
+          <div className="partners-marquee mt-6" aria-label={t("partners.title")}>
+            <div className="partners-marquee-track">
+              {[0, 1].map((copy) => (
+                <div
+                  key={copy}
+                  className="flex shrink-0 items-center gap-10 px-5 md:gap-16 md:px-8"
+                  aria-hidden={copy === 1}
+                >
+                  {colleges.map((college) => (
+                    <div key={college.id} className="flex shrink-0 items-center gap-3">
+                      <img
+                        src={collegeLogos[college.id]}
+                        alt=""
+                        className="size-14 shrink-0 rounded-lg object-cover md:size-16"
+                      />
+                      <span className="whitespace-nowrap text-sm font-medium text-soft md:text-base">
+                        {collegeTickerNames[college.id] ?? college.name}
+                      </span>
+                    </div>
+                  ))}
+                  <img
+                    src="/media/AIAcademy.png"
+                    alt="AIAcademy"
+                    className="size-20 shrink-0 rounded-lg object-contain md:size-24"
+                  />
+                  <img
+                    src="/media/NEN_logo.jpg"
+                    alt="NEN"
+                    className="h-20 w-36 shrink-0 rounded-lg border border-white/10 object-cover md:h-24 md:w-44"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -493,8 +547,16 @@ function HomeContent() {
               <p className="mt-4 text-sm text-dim">
                 {t("events.telegram")}{" "}
                 {site.telegram ? (
-                  <a href={site.telegram} className="text-lilac hover:underline" target="_blank" rel="noreferrer">
-                    {t("events.telegramLink")}
+                  <a
+                    href={site.telegram}
+                    className="text-lilac hover:underline"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <Send className="size-3.5" aria-hidden="true" />
+                      {t("events.telegramLink")}
+                    </span>
                   </a>
                 ) : (
                   <span className="text-soft">{t("events.telegramLink")}</span>
@@ -545,29 +607,29 @@ function HomeContent() {
                   <li key={item.q} className="border-b border-hairline">
                     <button
                       type="button"
-                      className="flex w-full flex-wrap items-start gap-x-6 gap-y-2 py-5 text-left"
+                      className="flex min-h-16 w-full items-center justify-between gap-5 py-5 text-left"
                       aria-expanded={open}
                       aria-controls={`faq-answer-${index}`}
                       onClick={() => setOpenFaq((current) => (current === index ? null : index))}
                     >
-                      <span className="order-1 min-w-0 flex-1 text-lg font-medium md:w-[38%] md:flex-none">
+                      <span className="min-w-0 flex-1 text-lg font-medium">
                         {item.q}
                       </span>
-                      <span
-                        id={`faq-answer-${index}`}
-                        className={cn(
-                          "order-3 basis-full text-sm leading-relaxed text-soft md:order-2 md:flex-1 md:basis-0",
-                          !open && "hidden",
-                        )}
-                      >
-                        {item.a}
-                      </span>
                       {open ? (
-                        <Minus className="order-2 size-4 shrink-0 text-dim md:order-3" />
+                        <Minus className="size-4 shrink-0 text-dim" />
                       ) : (
-                        <Plus className="order-2 size-4 shrink-0 text-dim md:order-3" />
+                        <Plus className="size-4 shrink-0 text-dim" />
                       )}
                     </button>
+                    <div
+                      id={`faq-answer-${index}`}
+                      className={cn(
+                        "max-w-3xl pb-5 pr-8 text-sm leading-relaxed text-soft",
+                        !open && "hidden",
+                      )}
+                    >
+                      {item.a}
+                    </div>
                   </li>
                 );
               })}
@@ -575,20 +637,39 @@ function HomeContent() {
           </div>
         </section>
 
-        <footer id="contact" className="scroll-mt-24 bg-band text-ink">
-          <div className="wrap py-16 md:py-20">
+        <footer
+          id="contact"
+          className="relative isolate scroll-mt-24 overflow-hidden bg-band text-ink"
+        >
+          <video
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            src="/media/wallrobo.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-bg/75" aria-hidden="true" />
+          <div className="wrap relative py-16 md:py-20">
             <Reveal>
               <SectionKicker index={t("contact.index")} label={t("contact.kicker")} />
               <div className="flex items-start justify-between gap-4">
                 <h2 className="section-title">{t("contact.title")}</h2>
                 <ArrowUpRight className="mt-2 size-7 text-lilac" />
               </div>
-              <p className="mt-8 text-base text-lilac md:text-lg">
-                <ContactBit href={site.email ? `mailto:${site.email}` : ""}>{t("contact.mail")}</ContactBit>
-                <span className="text-soft"> · </span>
-                <ContactBit href={site.instagram}>{t("contact.instagram")}</ContactBit>
-                <span className="text-soft"> · </span>
-                <ContactBit href={site.telegram}>{t("contact.telegram")}</ContactBit>
+              <p className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-base text-lilac md:text-lg">
+                {site.email ? (
+                  <ContactBit href={`mailto:${site.email}`} icon={<Mail className="size-4" />}>
+                    {t("contact.mail")}
+                  </ContactBit>
+                ) : null}
+                <ContactBit href={site.instagram} icon={<Instagram className="size-4" />}>
+                  {t("contact.instagram")}
+                </ContactBit>
+                <ContactBit href={site.telegram} icon={<Send className="size-4" />}>
+                  {t("contact.telegram")}
+                </ContactBit>
               </p>
             </Reveal>
             <p className="wordmark mt-12">RoboComm</p>
@@ -609,12 +690,22 @@ function HomeContent() {
   );
 }
 
-function ContactBit({ href, children }: { href: string; children: string }) {
-  if (!href) return <span>{children}</span>;
+function ContactBit({ href, icon, children }: { href: string; icon: ReactNode; children: string }) {
+  const content = (
+    <span className="inline-flex items-center gap-2">
+      {icon}
+      {children}
+    </span>
+  );
+  if (!href) return content;
   const external = href.startsWith("http");
   return (
-    <a href={href} className="hover:underline" {...(external ? { target: "_blank", rel: "noreferrer" } : {})}>
-      {children}
+    <a
+      href={href}
+      className="hover:underline"
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+    >
+      {content}
     </a>
   );
 }

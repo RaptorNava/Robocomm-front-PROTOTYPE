@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Globe2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cities, languages, useLocale } from "@/components/locale";
 import { cn } from "@/lib/cn";
@@ -33,17 +33,20 @@ export function LocaleSwitcher({ className }: { className?: string }) {
     <div ref={rootRef} className={cn("relative", className)}>
       <button
         type="button"
-        className="flex h-11 items-center gap-2 rounded-full border border-hairline bg-white/5 px-3.5 text-xs font-semibold tracking-[0.12em] text-lilac uppercase transition-colors hover:bg-white/10"
+        className="flex size-11 items-center justify-center gap-2 rounded-full border border-hairline bg-white/5 text-xs font-semibold tracking-[0.12em] text-lilac uppercase transition-colors hover:bg-white/10 sm:h-11 sm:w-auto sm:px-3.5"
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
       >
-        <span className="size-1.5 rounded-full bg-lilac" aria-hidden />
-        <span className="max-w-28 truncate">{cityName}</span>
-        <span className="text-soft">/</span>
-        <span>{short}</span>
-        <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
+        <Globe2 className="size-5 shrink-0 sm:hidden" aria-hidden />
+        <span className="hidden size-1.5 rounded-full bg-lilac sm:block" aria-hidden />
+        <span className="hidden max-w-28 truncate sm:inline">{cityName}</span>
+        <span className="hidden text-soft sm:inline">/</span>
+        <span className="hidden sm:inline">{short}</span>
+        <ChevronDown
+          className={cn("hidden size-3.5 transition-transform sm:block", open && "rotate-180")}
+        />
       </button>
       {open ? (
         <div
@@ -64,7 +67,9 @@ export function LocaleSwitcher({ className }: { className?: string }) {
                     type="button"
                     className={cn(
                       "flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm transition-colors",
-                      selected ? "bg-lilac/15 text-ink" : "text-soft hover:bg-white/5 hover:text-ink",
+                      selected
+                        ? "bg-lilac/15 text-ink"
+                        : "text-soft hover:bg-white/5 hover:text-ink",
                     )}
                     onClick={() => setCity(item.id)}
                   >
@@ -88,7 +93,9 @@ export function LocaleSwitcher({ className }: { className?: string }) {
                     type="button"
                     className={cn(
                       "flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm transition-colors",
-                      selected ? "bg-lilac/15 text-ink" : "text-soft hover:bg-white/5 hover:text-ink",
+                      selected
+                        ? "bg-lilac/15 text-ink"
+                        : "text-soft hover:bg-white/5 hover:text-ink",
                     )}
                     onClick={() => {
                       setLanguage(item.code);
