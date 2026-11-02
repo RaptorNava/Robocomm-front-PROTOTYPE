@@ -212,7 +212,7 @@ const en: Dictionary = {
       {
         id: "abdykerim",
         name: "Abdykerim Adenov",
-        role: "CEOPhysical AI Institute",
+        role: "CEO of Physical AI Institute",
         bio: "Part of the RoboComm launch team",
       },
       {
