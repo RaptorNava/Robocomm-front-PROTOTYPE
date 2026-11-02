@@ -248,7 +248,7 @@ function HomeContent() {
               style={{ animationDelay: "180ms" }}
             >
               <img
-                src="/brand/hero-logo.png"
+                src="/media/Robocomm_logo.jpg"
                 alt="RoboComm"
                 className="w-full max-w-full rounded-[2rem]"
               />

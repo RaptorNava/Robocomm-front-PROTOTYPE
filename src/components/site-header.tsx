@@ -20,7 +20,11 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-hairline/80 bg-bg/80 backdrop-blur-md">
       <div className="wrap flex h-16 items-center gap-3 md:h-[4.5rem]">
         <a href="#top" className="flex min-w-0 items-center gap-2.5">
-          <img src="/brand/mark.png" alt="" className="size-9 rounded-full object-cover" />
+          <img
+            src="/media/Robocomm_logo.jpg"
+            alt=""
+            className="size-9 rounded-full object-cover"
+          />
           <span className="text-lg font-semibold tracking-tight">RoboComm</span>
         </a>
         <nav className="ml-auto hidden items-center gap-7 lg:flex" aria-label={t("nav.menu")}>
