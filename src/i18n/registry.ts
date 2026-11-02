@@ -14,6 +14,7 @@
 export const languages = [
   { code: "ru", label: "Русский", short: "RU" },
   { code: "en", label: "English", short: "EN" },
+  { code: "kg", label: "Кыргызча", short: "KG" },
 ] as const;
 
 export const cities = [{ id: "bishkek", country: "KG" }] as const;

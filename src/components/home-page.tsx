@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -8,6 +8,7 @@ import {
   CircuitBoard,
   Cog,
   Eye,
+  GraduationCap,
   Info,
   Instagram,
   KeyRound,
@@ -28,23 +29,19 @@ import { cn } from "@/lib/cn";
 import "@/i18n";
 
 const stageArt = [
-  { image: "/media/stage-mech.jpg", icon: Cog },
-  { image: "/media/stage-arduino.jpg", icon: CircuitBoard },
-  { image: "/media/stage-pi.jpg", icon: Eye },
-  { image: "/media/stage-ros.jpg", icon: Waypoints },
+  {
+    image: "/media/stage-mech.jpg",
+    video: "/media/video/MechanicsElect_edit.mp4",
+    icon: Cog,
+  },
+  {
+    image: "/media/stage-arduino.jpg",
+    video: "/media/video/Arduino_edit.mp4",
+    icon: CircuitBoard,
+  },
+  { image: "/media/stage-pi.jpg", video: "/media/video/CV_edit.mp4", icon: Eye },
+  { image: "/media/stage-ros.jpg", video: "/media/video/ROS2_edit.mp4", icon: Waypoints },
 ];
-
-const collegeLogos: Record<string, string> = {
-  salym: "/media/college-salym.png",
-  tsi: "/media/college-tsi.png",
-  compass: "/media/college-compass.png",
-};
-
-const collegeTickerNames: Record<string, string> = {
-  salym: "Salymbekov University",
-  tsi: "TSI AUCA",
-  compass: "Compass College",
-};
 
 const principleIcons = [Check, CircleDashed, Shield, Minus];
 
@@ -58,6 +55,97 @@ const teamPhotos: Record<string, string> = {
   anvar: "/media/Kumushbekov_img.jpg",
   abdykerim: "/media/Adenov2_img.png",
 };
+
+function VideoPreview({
+  image,
+  video,
+  title,
+  className,
+  children,
+}: {
+  image: string;
+  video: string;
+  title: string;
+  className: string;
+  children: ReactNode | ((playing: boolean) => ReactNode);
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const start = () => {
+    const element = videoRef.current;
+    if (!element) return;
+    setPlaying(true);
+    void element.play().catch(() => setPlaying(false));
+  };
+
+  const stop = () => {
+    const element = videoRef.current;
+    if (element) {
+      element.pause();
+      element.currentTime = 0;
+    }
+    setPlaying(false);
+  };
+
+  const toggle = () => (playing ? stop() : start());
+  const onPointerEnter = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse") start();
+  };
+  const onPointerLeave = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse") stop();
+  };
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse") {
+      event.preventDefault();
+      toggle();
+    }
+  };
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle();
+    }
+  };
+
+  return (
+    <div
+      className={cn("overflow-hidden", className)}
+      role="button"
+      tabIndex={0}
+      aria-label={title}
+      aria-pressed={playing}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onPointerUp={onPointerUp}
+      onKeyDown={onKeyDown}
+      onBlur={stop}
+    >
+      <img
+        src={image}
+        alt=""
+        className={cn(
+          "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+          playing ? "opacity-0" : "opacity-100",
+        )}
+      />
+      <video
+        ref={videoRef}
+        src={video}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+          playing ? "opacity-100" : "opacity-0",
+        )}
+      />
+      {typeof children === "function" ? children(playing) : children}
+    </div>
+  );
+}
 
 function registrationHref() {
   return site.registrationUrl;
@@ -86,11 +174,6 @@ function HomeContent() {
   const stages = t("stages.items", { returnObjects: true }) as Array<{
     title: string;
     text: string;
-  }>;
-  const colleges = t("network.colleges", { returnObjects: true }) as Array<{
-    id: string;
-    name: string;
-    track: string;
   }>;
   const program = t("opening.items", { returnObjects: true }) as string[];
   const projects = t("projects.items", { returnObjects: true }) as Array<{
@@ -198,7 +281,25 @@ function HomeContent() {
             </Reveal>
             <div className="mt-10 grid items-start gap-10 lg:grid-cols-2">
               <Reveal>
-                <RayDiagram label={t("opening.diagram")} caption={t("opening.rays")} />
+                <VideoPreview
+                  image="/media/Flag_of_Kyrgyzstan.webp"
+                  video="/media/video/40rays.mp4"
+                  title={t("opening.title")}
+                  className="relative aspect-square rounded-3xl bg-panel"
+                >
+                  {(playing) =>
+                    playing ? (
+                      <>
+                        <div className="pointer-events-none absolute inset-0 bg-bg/35" />
+                        <p className="eyebrow absolute top-4 left-4">
+                          {t("opening.diagram")}
+                        </p>
+                      </>
+                    ) : (
+                      <RayDiagram label={t("opening.diagram")} caption={t("opening.rays")} />
+                    )
+                  }
+                </VideoPreview>
                 <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[1, 2, 3, 4].map((key, index) => (
                     <div
@@ -271,46 +372,17 @@ function HomeContent() {
                 </div>
               </Reveal>
               <Reveal delay={80}>
-                <div className="hidden grid-cols-[1fr_auto] px-2 pb-2 text-xs tracking-[0.14em] text-dim uppercase sm:grid">
-                  <span>{t("network.colCollege")}</span>
-                  <span>{t("network.colTrack")}</span>
+                <div className="flex items-start gap-4 border-t border-hairline py-5">
+                  <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-band text-lilac">
+                    <GraduationCap className="size-5" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-ink">{t("network.openTitle")}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-soft">
+                      {t("network.openText")}
+                    </p>
+                  </div>
                 </div>
-                <ul>
-                  {colleges.map((college, index) => (
-                    <li
-                      key={college.id}
-                      className="grid grid-cols-[auto_auto_1fr] items-center gap-3 border-t border-hairline py-4 sm:grid-cols-[auto_auto_1fr_auto] sm:gap-4"
-                    >
-                      <span
-                        className={cn(
-                          "size-2 rounded-full",
-                          index === 0 ? "bg-lilac" : "border border-soft/70",
-                        )}
-                      />
-                      <img
-                        src={collegeLogos[college.id]}
-                        alt=""
-                        className="size-11 rounded-xl object-cover"
-                      />
-                      <div className="min-w-0">
-                        <p className="font-medium text-ink">{college.name}</p>
-                        {index === 0 ? (
-                          <span className="mt-1 inline-flex rounded-full bg-band px-2.5 py-1 text-xs text-lilac sm:hidden">
-                            {t("network.opens")}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="col-span-3 text-sm text-soft sm:col-span-1 sm:text-right">
-                        <p>{college.track}</p>
-                        {index === 0 ? (
-                          <span className="mt-1 hidden rounded-full bg-band px-2.5 py-1 text-xs text-lilac sm:inline-flex">
-                            {t("network.opens")}
-                          </span>
-                        ) : null}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
               </Reveal>
             </div>
           </div>
@@ -326,38 +398,27 @@ function HomeContent() {
               {t("partners.title")}
             </h2>
           </div>
-          <div className="partners-marquee mt-6" aria-label={t("partners.title")}>
-            <div className="partners-marquee-track">
-              {[0, 1].map((copy) => (
-                <div
-                  key={copy}
-                  className="flex shrink-0 items-center gap-10 px-5 md:gap-16 md:px-8"
-                  aria-hidden={copy === 1}
-                >
-                  {colleges.map((college) => (
-                    <div key={college.id} className="flex shrink-0 items-center gap-3">
-                      <img
-                        src={collegeLogos[college.id]}
-                        alt=""
-                        className="size-14 shrink-0 rounded-lg object-cover md:size-16"
-                      />
-                      <span className="whitespace-nowrap text-sm font-medium text-soft md:text-base">
-                        {collegeTickerNames[college.id] ?? college.name}
-                      </span>
-                    </div>
-                  ))}
-                  <img
-                    src="/media/AIAcademy.png"
-                    alt="AIAcademy"
-                    className="size-20 shrink-0 rounded-lg object-contain md:size-24"
-                  />
-                  <img
-                    src="/media/NEN_logo.jpg"
-                    alt="NEN"
-                    className="h-20 w-36 shrink-0 rounded-lg border border-white/10 object-cover md:h-24 md:w-44"
-                  />
-                </div>
-              ))}
+          <div
+            className="wrap mt-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 sm:justify-start"
+            aria-label={t("partners.title")}
+          >
+            <div className="flex min-w-0 items-center gap-4">
+              <img
+                src="/media/AIAcademy.png"
+                alt=""
+                className="size-20 shrink-0 rounded-lg object-contain md:size-24"
+              />
+              <span className="text-sm font-semibold text-ink md:text-base">AI Academy</span>
+            </div>
+            <div className="flex min-w-0 items-center gap-4">
+              <img
+                src="/media/NEN_logo.jpg"
+                alt=""
+                className="h-20 w-36 shrink-0 rounded-lg border border-white/10 object-cover md:h-24 md:w-44"
+              />
+              <span className="max-w-40 text-sm font-semibold text-ink md:text-base">
+                National Education Network
+              </span>
             </div>
           </div>
         </section>
@@ -373,13 +434,13 @@ function HomeContent() {
                 const Icon = stageArt[index]?.icon ?? Cog;
                 return (
                   <Reveal key={stage.title} delay={index * 80}>
-                    <article className="relative h-72 overflow-hidden rounded-3xl">
-                      <img
-                        src={stageArt[index]?.image}
-                        alt=""
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20" />
+                    <VideoPreview
+                      image={stageArt[index]?.image ?? stageArt[0].image}
+                      video={stageArt[index]?.video ?? stageArt[0].video}
+                      title={stage.title}
+                      className="relative h-72 rounded-3xl"
+                    >
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20" />
                       <div className="relative flex h-full flex-col justify-between p-5">
                         <div className="flex items-start justify-between text-sm text-ink/80">
                           <span>0{index + 1}</span>
@@ -390,7 +451,7 @@ function HomeContent() {
                           <p className="mt-2 text-sm text-ink/80">{stage.text}</p>
                         </div>
                       </div>
-                    </article>
+                    </VideoPreview>
                   </Reveal>
                 );
               })}
@@ -413,17 +474,47 @@ function HomeContent() {
                   <article className="flex h-full flex-col rounded-3xl border border-hairline bg-card p-3">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-panel">
                       {index === 0 ? (
-                        <RayDiagram compact />
+                        <VideoPreview
+                          image="/media/Flag_of_Kyrgyzstan.webp"
+                          video="/media/video/40rays.mp4"
+                          title={project.title}
+                          className="absolute inset-0"
+                        >
+                          {(playing) => (
+                            <>
+                              {!playing ? <RayDiagram compact /> : null}
+                              {playing ? (
+                                <div className="pointer-events-none absolute inset-0 bg-bg/35" />
+                              ) : null}
+                              <p className="pointer-events-none absolute bottom-3 left-3 text-xs tracking-widest text-ink/80 uppercase">
+                                {project.tag}
+                              </p>
+                            </>
+                          )}
+                        </VideoPreview>
+                      ) : index === 1 ? (
+                        <VideoPreview
+                          image="/media/proj-rover.jpg"
+                          video="/media/video/ArdMachine.mp4"
+                          title={project.title}
+                          className="absolute inset-0"
+                        >
+                          <p className="pointer-events-none absolute bottom-3 left-3 text-xs tracking-widest text-ink/80 uppercase">
+                            {project.tag}
+                          </p>
+                        </VideoPreview>
                       ) : (
                         <img
-                          src={index === 1 ? "/media/proj-rover.jpg" : "/media/proj-expo.jpg"}
+                          src="/media/proj-expo.jpg"
                           alt=""
                           className="h-full w-full object-cover"
                         />
                       )}
-                      <p className="absolute bottom-3 left-3 text-xs tracking-widest text-ink/80 uppercase">
-                        {project.tag}
-                      </p>
+                      {index > 1 ? (
+                        <p className="absolute bottom-3 left-3 text-xs tracking-widest text-ink/80 uppercase">
+                          {project.tag}
+                        </p>
+                      ) : null}
                     </div>
                     <span className="mt-4 inline-flex w-fit rounded-full bg-band px-3 py-1 text-xs text-lilac">
                       {project.status}
@@ -577,11 +668,24 @@ function HomeContent() {
               {people.map((person, index) => (
                 <Reveal key={person.id} delay={(index % 2) * 60}>
                   <li className="flex min-w-0 gap-4 border-t border-hairline py-5">
-                    <img
-                      src={teamPhotos[person.id] ?? `/media/avatar-${person.id}.jpg`}
-                      alt=""
-                      className="size-16 shrink-0 rounded-full object-cover sm:size-18"
-                    />
+                    {teamPhotos[person.id] ? (
+                      <img
+                        src={teamPhotos[person.id]}
+                        alt=""
+                        className="size-16 shrink-0 rounded-full object-cover sm:size-18"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="grid size-16 shrink-0 place-items-center rounded-full border border-hairline bg-band text-sm font-semibold text-lilac sm:size-18"
+                      >
+                        {person.name
+                          .split(" ")
+                          .map((part) => part[0])
+                          .slice(0, 2)
+                          .join("")}
+                      </span>
+                    )}
                     <div className="min-w-0">
                       <p className="font-semibold">{person.name}</p>
                       <p className="text-sm text-lilac">{person.role}</p>

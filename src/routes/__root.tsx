@@ -9,7 +9,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "RoboComm" },
-      { name: "description", content: "Студенческий клуб робототехники четырёх колледжей Бишкека." },
+      { name: "description", content: "Студенческий клуб робототехники для студентов всех колледжей Бишкека." },
       { name: "theme-color", content: "#080c16" },
     ],
     links: [

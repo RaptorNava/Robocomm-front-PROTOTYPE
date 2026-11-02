@@ -162,26 +162,6 @@
   transform-origin: 50% 40%;
 }
 
-@keyframes partners-marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.partners-marquee {
-  overflow: hidden;
-}
-
-.partners-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: partners-marquee 36s linear infinite;
-}
-
-.partners-marquee:hover .partners-marquee-track {
-  animation-play-state: paused;
-}
-
 .wordmark {
   font-size: clamp(3.5rem, 12vw, 8.5rem);
   line-height: 0.9;
@@ -206,20 +186,7 @@
   .float-y,
   .spin-slow,
   .dot-breathe,
-  .key-turn,
-  .partners-marquee-track {
+  .key-turn {
     animation: none;
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .partners-marquee-track > div {
-    display: contents;
-  }
-
-  .partners-marquee-track > div[aria-hidden="true"] {
-    display: none;
   }
 }

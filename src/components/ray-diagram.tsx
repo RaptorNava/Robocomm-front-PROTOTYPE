@@ -12,7 +12,13 @@ export function RayDiagram({
   const coord = (value: number) => value.toFixed(3);
 
   return (
-    <div className={compact ? "relative" : "relative overflow-hidden rounded-3xl bg-panel"}>
+    <div
+      className={
+        compact
+          ? "relative h-full w-full"
+          : "relative h-full w-full overflow-hidden rounded-3xl bg-panel"
+      }
+    >
       {!compact ? (
         <img
           src="/media/Flag_of_Kyrgyzstan.webp"
@@ -26,7 +32,7 @@ export function RayDiagram({
       ) : null}
       <svg
         viewBox="0 0 320 320"
-        className={compact ? "h-full w-full" : "relative mx-auto w-full max-w-md"}
+        className={compact ? "h-full w-full" : "relative mx-auto block h-full w-full max-w-md"}
         aria-hidden
       >
         <g className="spin-slow">
