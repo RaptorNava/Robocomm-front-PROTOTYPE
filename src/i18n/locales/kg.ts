@@ -217,7 +217,7 @@ const ky = {
         id: "abdykerim",
         name: "Абдыкерим Аденов",
         role: "Physical AI Institute CEO",
-        bio: "RoboComm ишке киргизүү командасынын катышуучусу",
+        bio: "RoboComm ишке киргизүү командасынын куратору",
       },
       {
         id: "kuttuubai",

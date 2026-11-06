@@ -217,7 +217,7 @@ const ru = {
         id: "abdykerim",
         name: "Абдыкерим Аденов",
         role: "CEO Physical AI Institute",
-        bio: "Участник команды запуска RoboComm",
+        bio: "Куратор команды запуска RoboComm",
       },
       {
         id: "kuttuubai",
