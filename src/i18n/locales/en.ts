@@ -231,8 +231,8 @@ const en: Dictionary = {
       { q: "Do I need experience?", a: "No. We will teach soldering and programming." },
       { q: "How much does it cost?", a: "Nothing. The club is free." },
       {
-        q: "I study at another college. Can I join?",
-        a: "Yes. Choose “another college” when you register.",
+        q: "Who can join RoboComm?",
+        a: "Any college student. RoboComm welcomes students from all colleges — fill in the form to join.",
       },
       {
         q: "What is Physical AI?",
